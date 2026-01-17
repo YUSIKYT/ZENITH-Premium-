@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith Overlays | Магазин оверлеев</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #a970ff;
+            --secondary: #ff79c6;
+            --bg: #0a0a0c;
+            --card-bg: rgba(20, 10, 35, 0.8);
+            --accent: #00f2ff;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Exo 2', sans-serif;
+            margin: 0;
+            background-image: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #0a0a0c 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--primary);
+            box-shadow: 0 0 20px rgba(169, 112, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Кнопка добавления */
+        .add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .add-btn:hover {
+            box-shadow: 0 0 20px var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Сетка оверлеев */
+        .overlay-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(169, 112, 255, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 20px;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .download-link {
+            display: block;
+            text-align: center;
+            background: rgba(169, 112, 255, 0.1);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .download-link:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #1a0b2e;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid var(--primary);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        input, textarea {
+            width: 100%;
+            background: #0a0a0c;
+            border: 1px solid var(--primary);
+            color: white;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">ZENITH NEON</div>
+    <button class="add-btn" onclick="openModal()">+ ВЫЛОЖИТЬ ОВЕРЛЕЙ</button>
+</header>
+
+<div class="container">
+    <section class="hero">
+        <h1>Anime Stream Overlays</h1>
+        <p>Библиотека бесплатных неоновых оверлеев для OBS и Twitch</p>
+    </section>
+
+    <div class="overlay-grid" id="overlayGrid">
+        <div class="card">
+            <div class="card-img" style="background-image: url('https://i.postimg.cc/mD3m6vS6/image.png');"></div>
+            <div class="card-content">
+                <div class="card-title">ZENITOPY NEON UI</div>
+                <div class="card-desc">Фиолетовый неоновый оверлей с анимацией ника и иконкой Twitch.</div>
+                <a href="#" class="download-link"><i class="fas fa-download"></i> Скачать ZIP</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="uploadModal">
+    <div class="modal-content">
+        <h2 style="font-family: Orbitron; color: var(--primary);">Загрузить свой</h2>
+        <input type="text" id="title" placeholder="Название оверлея">
+        <textarea id="desc" placeholder="Описание"></textarea>
+        <p style="font-size: 0.8rem; color: var(--secondary);">* Для GitHub Pages загрузка файлов требует бэкенда. Данная форма имитирует добавление в список.</p>
+        <input type="file" id="fileZip" accept=".zip">
+        <button class="add-btn" style="width: 100%;" onclick="addOverlay()">ОПУБЛИКОВАТЬ</button>
+        <button class="add-btn" style="width: 100%; margin-top: 10px; background: #444;" onclick="closeModal()">ОТМЕНА</button>
+    </div>
+</div>
+
+<script>
+    function openModal() { document.getElementById('uploadModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('uploadModal').style.display = 'none'; }
+
+    function addOverlay() {
+        const title = document.getElementById('title').value;
+        const desc = document.getElementById('desc').value;
+        
+        if(!title) return alert("Введите название!");
+
+        const grid = document.getElementById('overlayGrid');
+        const newCard = document.createElement('div');
+        newCard.className = 'card';
+        newCard.innerHTML = `
+            <div class="card-img" style="background-image: url('https://via.placeholder.com/300x180/2d0a55/ffffff?text=Overlay');"></div>
+            <div class="card-content">
+                <div class="card-title">${title}</div>
+                <div class="card-desc">${desc}</div>
+                <a href="#" class="download-link"><i class="fas fa-download"></i> Скачать ZIP</a>
+            </div>
+        `;
+        grid.prepend(newCard);
+        closeModal();
+    }
+</script>
+
+</body>
+</html>
