@@ -9,220 +9,122 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
-        :root {
-            --primary: #a970ff;
-            --secondary: #ff79c6;
-            --bg: #0a0a0c;
-            --card-bg: rgba(20, 10, 35, 0.8);
-            --accent: #00f2ff;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Exo 2', sans-serif;
-            margin: 0;
-            background-image: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #0a0a0c 100%);
-            min-height: 100vh;
-        }
-
-        header {
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--primary);
-            box-shadow: 0 0 20px rgba(169, 112, 255, 0.2);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .hero { text-align: center; margin-bottom: 60px; }
-        .hero h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            background: linear-gradient(90deg, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .add-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
-            font-family: 'Orbitron', sans-serif;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .add-btn:hover { box-shadow: 0 0 20px var(--primary); transform: translateY(-2px); }
-
-        /* Сетка */
-        .overlay-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid rgba(169, 112, 255, 0.3);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: 0.3s;
-        }
-
-        .card:hover { border-color: var(--primary); transform: scale(1.02); }
-
-        .card-img { width: 100%; height: 180px; background-size: cover; background-position: center; }
-
-        .card-content { padding: 20px; }
-
-        .card-title { font-family: 'Orbitron', sans-serif; color: var(--accent); margin-bottom: 10px; }
-
-        .download-link {
-            display: block;
-            text-align: center;
-            background: rgba(169, 112, 255, 0.1);
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            margin-top: 15px;
-        }
-
+        :root { --primary: #a970ff; --bg: #0a0a0c; --card-bg: rgba(20, 10, 35, 0.8); }
+        body { background-color: var(--bg); color: white; font-family: 'Exo 2', sans-serif; margin: 0; }
+        header { padding: 20px 50px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--primary); background: rgba(10, 10, 12, 0.9); position: sticky; top: 0; z-index: 100; }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .overlay-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .card { background: var(--card-bg); border: 1px solid rgba(169, 112, 255, 0.3); border-radius: 12px; overflow: hidden; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .card-img { width: 100%; height: 160px; background-size: cover; background-position: center; background-color: #1a0b2e; }
+        .card-content { padding: 15px; }
+        .download-btn { display: block; text-align: center; background: var(--primary); color: white; padding: 10px; border-radius: 5px; text-decoration: none; margin-top: 10px; font-weight: bold; }
+        
         /* Модалка */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center;
-        }
-
-        .modal-content {
-            background: #1a0b2e; padding: 30px; border-radius: 15px; border: 2px solid var(--primary);
-            width: 90%; max-width: 500px;
-        }
-
-        input, textarea {
-            width: 100%; background: #0a0a0c; border: 1px solid var(--primary);
-            color: white; padding: 10px; margin: 10px 0; border-radius: 5px;
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: #1a0b2e; padding: 30px; border-radius: 15px; border: 2px solid var(--primary); width: 90%; max-width: 450px; }
+        input, textarea { width: 100%; background: #000; border: 1px solid var(--primary); color: white; padding: 10px; margin: 10px 0; border-radius: 5px; box-sizing: border-box; }
+        .loading { display: none; color: #ff79c6; font-weight: bold; margin: 10px 0; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo">ZENITH NEON</div>
-    <button class="add-btn" onclick="toggleModal(true)">+ ОПУБЛИКОВАТЬ СВОЙ</button>
+    <button onclick="toggleModal(true)" style="background: var(--primary); border: none; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-family: Orbitron;">+ ВЫЛОЖИТЬ</button>
 </header>
 
 <div class="container">
-    <section class="hero">
-        <h1>Anime Stream Overlays</h1>
-        <p>Библиотека, созданная сообществом. Загружай и скачивай бесплатно.</p>
-    </section>
-
     <div class="overlay-grid" id="overlayGrid">
         </div>
 </div>
 
 <div class="modal" id="uploadModal">
     <div class="modal-content">
-        <h2 style="font-family: Orbitron; color: var(--primary);">Новый Оверлей</h2>
-        <input type="text" id="insTitle" placeholder="Название (например: Neon Twitch Bar)">
-        <textarea id="insDesc" placeholder="Описание (коротко)"></textarea>
-        <input type="text" id="insImg" placeholder="Ссылка на скриншот (URL)">
-        <input type="text" id="insZip" placeholder="Ссылка на ZIP файл (из GitHub или облака)">
-        <button class="add-btn" style="width: 100%;" onclick="uploadToSupabase()">ОТПРАВИТЬ В БАЗУ</button>
-        <button class="add-btn" style="width: 100%; margin-top: 10px; background: #444;" onclick="toggleModal(false)">ОТМЕНА</button>
+        <h2 style="font-family: Orbitron; color: var(--primary); margin-top: 0;">Загрузка оверлея</h2>
+        <input type="text" id="title" placeholder="Название">
+        <textarea id="desc" placeholder="Описание"></textarea>
+        
+        <label>ZIP Файл оверлея:</label>
+        <input type="file" id="zipFile" accept=".zip">
+        
+        <label>Скриншот (JPG/PNG):</label>
+        <input type="file" id="imgFile" accept="image/*">
+
+        <div id="loader" class="loading">Подождите, идет загрузка в облако...</div>
+
+        <button onclick="handleUpload()" id="upBtn" style="width: 100%; background: var(--primary); border: none; color: white; padding: 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">ОПУБЛИКОВАТЬ ДЛЯ ВСЕХ</button>
+        <button onclick="toggleModal(false)" style="width: 100%; background: transparent; color: #666; border: none; margin-top: 10px; cursor: pointer;">Отмена</button>
     </div>
 </div>
 
 <script>
-    // КОНФИГУРАЦИЯ SUPABASE
-    const SUPABASE_URL = 'ВСТАВЬ_СЮДА_СВОЙ_SUPABASE_URL'; 
+    const SUPABASE_URL = 'ВСТАВЬ_СВОЙ_URL';
     const SUPABASE_KEY = 'sb_publishable_pU55sTOUVYXc6dZCS7BESg_xWcIqpFe';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Функция переключения модалки
-    function toggleModal(show) {
-        document.getElementById('uploadModal').style.display = show ? 'flex' : 'none';
-    }
+    function toggleModal(show) { document.getElementById('uploadModal').style.display = show ? 'flex' : 'none'; }
 
-    // Загрузка данных из базы при открытии сайта
-    async function loadOverlays() {
-        const { data, error } = await _supabase
-            .from('overlays')
-            .select('*')
-            .order('id', { ascending: false });
+    // ГЛАВНАЯ ФУНКЦИЯ: ЗАГРУЗКА
+    async function handleUpload() {
+        const title = document.getElementById('title').value;
+        const desc = document.getElementById('desc').value;
+        const zipFile = document.getElementById('zipFile').files[0];
+        const imgFile = document.getElementById('imgFile').files[0];
 
-        if (error) console.error(error);
-        else renderCards(data);
-    }
+        if (!title || !zipFile || !imgFile) return alert("Заполни все поля и выбери файлы!");
 
-    function renderCards(list) {
-        const grid = document.getElementById('overlayGrid');
-        grid.innerHTML = '';
-        list.forEach(item => {
-            grid.innerHTML += `
-                <div class="card">
-                    <div class="card-img" style="background-image: url('${item.image_url || 'https://via.placeholder.com/300x180/2d0a55/ffffff?text=No+Image'}');"></div>
-                    <div class="card-content">
-                        <div class="card-title">${item.title}</div>
-                        <div style="font-size: 0.8rem; color: #aaa;">${item.description}</div>
-                        <a href="${item.zip_url}" class="download-link" target="_blank">
-                            <i class="fas fa-download"></i> СКАЧАТЬ ZIP
-                        </a>
-                    </div>
-                </div>
-            `;
-        });
-    }
+        // Показываем лоадер
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('upBtn').disabled = true;
 
-    // Сохранение нового оверлея
-    async function uploadToSupabase() {
-        const title = document.getElementById('insTitle').value;
-        const desc = document.getElementById('insDesc').value;
-        const img = document.getElementById('insImg').value;
-        const zip = document.getElementById('insZip').value;
+        try {
+            // 1. Загружаем ZIP в Storage
+            const zipName = `zip_${Date.now()}_${zipFile.name}`;
+            const { data: zipData } = await _supabase.storage.from('overlays').upload(zipName, zipFile);
+            const { data: zipUrl } = _supabase.storage.from('overlays').getPublicUrl(zipName);
 
-        if (!title || !zip) return alert("Название и ссылка на ZIP обязательны!");
+            // 2. Загружаем Картинку в Storage
+            const imgName = `img_${Date.now()}_${imgFile.name}`;
+            const { data: imgData } = await _supabase.storage.from('overlays').upload(imgName, imgFile);
+            const { data: imgUrl } = _supabase.storage.from('overlays').getPublicUrl(imgName);
 
-        const { error } = await _supabase
-            .from('overlays')
-            .insert([{ title, description: desc, image_url: img, zip_url: zip }]);
+            // 3. Записываем данные в таблицу базы
+            const { error } = await _supabase.from('overlays').insert([{
+                title: title,
+                description: desc,
+                zip_url: zipUrl.publicUrl,
+                image_url: imgUrl.publicUrl
+            }]);
 
-        if (error) {
-            alert("Ошибка при сохранении!");
-            console.log(error);
-        } else {
-            alert("Успешно добавлено!");
-            toggleModal(false);
-            loadOverlays(); // Обновляем список
+            if (error) throw error;
+
+            alert("Готово! Твой оверлей теперь видят все.");
+            location.reload();
+        } catch (err) {
+            console.error(err);
+            alert("Ошибка загрузки. Проверь настройки Storage в Supabase.");
         }
     }
 
-    // Запуск при загрузке страницы
-    loadOverlays();
-</script>
+    // Загрузка карточек
+    async function loadData() {
+        const { data } = await _supabase.from('overlays').select('*').order('id', { ascending: false });
+        const grid = document.getElementById('overlayGrid');
+        grid.innerHTML = data.map(item => `
+            <div class="card">
+                <div class="card-img" style="background-image: url('${item.image_url}')"></div>
+                <div class="card-content">
+                    <div style="font-family: Orbitron; color: #00f2ff;">${item.title}</div>
+                    <p style="font-size: 0.8rem; color: #ccc;">${item.description}</p>
+                    <a href="${item.zip_url}" class="download-btn" download><i class="fas fa-download"></i> СКАЧАТЬ ZIP</a>
+                </div>
+            </div>
+        `).join('');
+    }
 
+    loadData();
+</script>
 </body>
 </html>
